@@ -7,6 +7,7 @@ import (
 	"io"
 	"os"
 	"path/filepath"
+	"strings"
 	"sync"
 )
 
@@ -112,8 +113,10 @@ func (r *RepositorioCanciones) GuardarCancion(titulo string, genero string, arti
 	r.mu.Lock()
 	defer r.mu.Unlock()
 
+	NewTitulo := strings.ReplaceAll(titulo, " ", "_")
+	NewArtista := strings.ReplaceAll(artista, " ", "_")
 	// 1. Construir nombre del archivo y la ruta.
-	fileName := fmt.Sprintf("%s_%s.mp3", artista, titulo)
+	fileName := fmt.Sprintf("%s_%s.mp3", NewArtista, NewTitulo)
 	filePath := filepath.Join("audios", fileName)
 
 	// 2. Comprobar si ya existe una canción con la misma ruta (evitar duplicados).

@@ -1,18 +1,10 @@
 [
   {
-    "titulo": "Lamento Boliviano",
-    "artista": "Los enanitos verdes",
-    "album": "",
-    "genero": "Rock",
-    "release_year": 1994,
-    "file_path": "audios\\Los enanitos verdes_Lamento Boliviano.mp3"
-  },
-  {
     "titulo": "Fantastic Life",
     "artista": "Cult Member",
     "album": "Stockholm",
     "genero": "Techno",
     "release_year": 2018,
-    "file_path": "audios\\Cult Member_Fantastic Life.mp3"
+    "file_path": "audios\\Cult_Member_Fantastic_Life.mp3"
   }
 ]
