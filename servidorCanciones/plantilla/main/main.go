@@ -14,7 +14,7 @@ func main() {
 	router := mux.NewRouter()
 
 	router.HandleFunc("/canciones/almacenamiento", ctrl.AlmacenarAudioCancion)
-	router.HandleFunc("/generos", controlador.NuevoControladorAlmacenamientoCanciones().ObtenerGeneros)
+	router.HandleFunc("/generos", controlador.NuevoControladorGeneros().ObtenerGeneros)
 	router.HandleFunc("/generos/{genero}/canciones", controlador.NuevoControladorAlmacenamientoCanciones().ObtenerCancionesPorGenero)
 
 	fmt.Println("✅ Servicio de Tendencias escuchando en el puerto 5000...")

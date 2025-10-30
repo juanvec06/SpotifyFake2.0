@@ -31,10 +31,7 @@ func NuevaFachadaAlmacenamiento() *FachadaAlmacenamiento {
 }
 
 func (thisF *FachadaAlmacenamiento) GetSongsByGenreService(genero string) ([]dtos.CancionDTOOutput, error) {
-	// Aquí se llamaría al repositorio para obtener las canciones por género
-	// Por simplicidad, devolvemos una lista vacía
-	var canciones []dtos.CancionDTOOutput
-	return canciones, nil
+	return thisF.repo.GetSongsByGenre(genero)
 }
 func (thisF *FachadaAlmacenamiento) GuardarCancion(objCancion dtos.CancionAlmacenarDTOInput, data []byte) error {
 	thisF.conexionCola.PublicarNotificacion(componnteconexioncola.NotificacionCancion{
@@ -44,5 +41,5 @@ func (thisF *FachadaAlmacenamiento) GuardarCancion(objCancion dtos.CancionAlmace
 		Mensaje: "Nueva canción almacenada: " + objCancion.Titulo + " de " + objCancion.Artista,
 	})
 
-	return thisF.repo.GuardarCancion(objCancion.Titulo, objCancion.Genero, objCancion.Artista, data)
+	return thisF.repo.GuardarCancion(objCancion.Titulo, objCancion.Genero, objCancion.Artista, objCancion.Album, objCancion.ReleaseYear, data)
 }
