@@ -13,9 +13,14 @@ func main() {
 
 	router := mux.NewRouter()
 
-	router.HandleFunc("/canciones/almacenamiento", ctrl.AlmacenarAudioCancion)
-	router.HandleFunc("/generos", controlador.NuevoControladorGeneros().ObtenerGeneros)
-	router.HandleFunc("/generos/{genero}/canciones", controlador.NuevoControladorAlmacenamientoCanciones().ObtenerCancionesPorGenero)
+	router.HandleFunc("/canciones/almacenamiento", ctrl.AlmacenarAudioCancion).Methods("POST")
+	router.HandleFunc("/generos", controlador.NuevoControladorGeneros().ObtenerGeneros).Methods("GET")
+	router.HandleFunc("/generos/{genero}/canciones", controlador.NuevoControladorAlmacenamientoCanciones().ObtenerCancionesPorGenero).Methods("GET")
+	// --- NUEVA RUTA PARA SERVIR ARCHIVOS DE AUDIO ---
+	// Usamos un prefijo y un FileServer para servir de forma segura los archivos del directorio 'audios'.
+	// http.StripPrefix quita "/audio/" de la URL para que FileServer busque desde la raíz de 'audios'.
+	fs := http.FileServer(http.Dir("./audios/"))
+	router.PathPrefix("/audio/").Handler(http.StripPrefix("/audio/", fs))
 
 	fmt.Println("✅ Servicio de Tendencias escuchando en el puerto 5000...")
 	if err := http.ListenAndServe(":5000", router); err != nil {

@@ -125,10 +125,12 @@ func (r *RepositorioCanciones) GuardarCancion(titulo string, genero string, arti
 
 	// 3. Crear el nuevo DTO con los metadatos.
 	nuevaCancion := dtos.CancionDTOOutput{
-		Titulo:   titulo,
-		Artista:  artista,
-		Genero:   genero,
-		FilePath: filePath, // Guardamos la ruta para futura referencia
+		Titulo:      titulo,
+		Artista:     artista,
+		Genero:      genero,
+		FilePath:    filePath, // Guardamos la ruta para futura referencia
+		Album:       album,
+		ReleaseYear: releaseYear,
 	}
 
 	// 4. Agregar los nuevos metadatos al slice en memoria.

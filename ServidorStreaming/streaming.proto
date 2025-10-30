@@ -1,0 +1,13 @@
+syntax = "proto3";
+package streaming;
+option go_package = "./serviciosCancion;serviciosCancion";
+
+message StreamSongRequest {
+    string songTitle = 1;
+}
+message AudioChunk {
+    bytes data = 1;
+}
+service StreamingService {
+    rpc StreamSong(StreamSongRequest) returns (stream AudioChunk);
+}
