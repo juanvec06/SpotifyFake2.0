@@ -13,8 +13,32 @@ import (
 
 var reader = bufio.NewReader(os.Stdin)
 
+var usuarios = map[string]string{
+	"usuario1": "password1",
+	"usuario2": "password2",
+	"usuario3": "password3",
+}
+
+func MostrarIniciarSesion(facade *services.MusicFacade) {
+	fmt.Println("===== Iniciar Sesión =====")
+	fmt.Print("Usuario: ")
+	usuario, _ := reader.ReadString('\n')
+	usuario = strings.TrimSpace(usuario)
+	fmt.Print("Contraseña: ")
+	contraseña, _ := reader.ReadString('\n')
+	contraseña = strings.TrimSpace(contraseña)
+
+	if password, ok := usuarios[usuario]; ok && password == contraseña {
+		fmt.Println("Inicio de sesión exitoso.")
+		MostrarMenuPrincipal(facade, usuario)
+	} else {
+		fmt.Println("Usuario o contraseña incorrectos.")
+		return
+	}
+}
+
 // Función principal que muestra el menú inicial
-func MostrarMenuPrincipal(facade *services.MusicFacade) {
+func MostrarMenuPrincipal(facade *services.MusicFacade, Usuario string) {
 	for {
 		fmt.Println("\n===== Spotify =====")
 		fmt.Println("1. Ver géneros")
@@ -31,7 +55,7 @@ func MostrarMenuPrincipal(facade *services.MusicFacade) {
 			mostrarMenuCanciones(facade, models.Genre{Name: ""})
 		case "3":
 			//TODO
-			//mostrarMenuPreferencias(facade)
+			//mostrarMenuPreferencias(facade, Usuario)
 		case "4":
 			fmt.Println("¡Hasta luego!")
 			return

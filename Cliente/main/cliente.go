@@ -39,5 +39,5 @@ func main() {
 	musicFacade := services.NewMusicFacade(streamingClient)
 
 	// Pasar la fachada a las vistas
-	vistas.MostrarMenuPrincipal(musicFacade)
+	vistas.MostrarIniciarSesion(musicFacade)
 }
