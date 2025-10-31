@@ -6,5 +6,21 @@
     "genero": "Techno",
     "release_year": 2018,
     "file_path": "audios\\Cult_Member_Fantastic_Life.mp3"
+  },
+  {
+    "titulo": "Lamento Boliviano",
+    "artista": "Los enanitos verdes",
+    "album": "BigBang",
+    "genero": "Rock",
+    "release_year": 1994,
+    "file_path": "audios\\Los_enanitos_verdes_Lamento_Boliviano.mp3"
+  },
+  {
+    "titulo": "De musica ligera",
+    "artista": "Soda estereo",
+    "album": "Cancion animal",
+    "genero": "Rock",
+    "release_year": 1990,
+    "file_path": "audios\\Soda_estereo_De_musica_ligera.mp3"
   }
 ]

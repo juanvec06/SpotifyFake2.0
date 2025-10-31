@@ -44,6 +44,11 @@ func (f *MusicFacade) GetSongsByGenre(genreName string) ([]models.Song, error) {
 	return f.cancionConsumer.GetSongsByGenre(genreName)
 }
 
+// GetAllSongs obtiene todas las canciones disponibles
+func (f *MusicFacade) GetAllSongs() ([]models.Song, error) {
+	return f.cancionConsumer.GetAllSongs()
+}
+
 // PlaySong se mantiene igual, ya que sigue usando gRPC para el streaming.
 func (f *MusicFacade) PlaySong(filename string, stopSignal chan bool) error {
 	// Reemplazamos las barras invertidas por barras normales para asegurar

@@ -30,9 +30,14 @@ func NuevaFachadaAlmacenamiento() *FachadaAlmacenamiento {
 	}
 }
 
+func (thisF *FachadaAlmacenamiento) GetAllSongsService() ([]dtos.CancionDTOOutput, error) {
+	return thisF.repo.GetAllSongs()
+}
+
 func (thisF *FachadaAlmacenamiento) GetSongsByGenreService(genero string) ([]dtos.CancionDTOOutput, error) {
 	return thisF.repo.GetSongsByGenre(genero)
 }
+
 func (thisF *FachadaAlmacenamiento) GuardarCancion(objCancion dtos.CancionAlmacenarDTOInput, data []byte) error {
 	thisF.conexionCola.PublicarNotificacion(componnteconexioncola.NotificacionCancion{
 		Titulo:  objCancion.Titulo,

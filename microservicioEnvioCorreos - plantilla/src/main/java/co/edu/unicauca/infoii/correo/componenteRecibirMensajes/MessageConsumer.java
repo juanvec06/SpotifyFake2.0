@@ -1,6 +1,7 @@
 package co.edu.unicauca.infoii.correo.componenteRecibirMensajes;
 
 import org.springframework.stereotype.Service;
+import java.time.LocalDateTime;
 
 import co.edu.unicauca.infoii.correo.DTOs.CancionAlmacenarDTOInput;
 import co.edu.unicauca.infoii.correo.commons.Simulacion;
@@ -18,7 +19,12 @@ public class MessageConsumer {
         System.out.println("Título: "+ objClienteCreado.getTitulo());
         System.out.println("Artista: "+ objClienteCreado.getArtista());
         System.out.println("Genero: "+ objClienteCreado.getGenero());
+        System.out.println("-----------------------------------");
+        System.out.println("Fecha y hora de registro");
+        LocalDateTime fechayhora = LocalDateTime.now();
+        System.out.println(fechayhora);
+        System.out.println("-----------------------------------");
+        System.out.println("RECUERDA: La música es el idioma del alma;cada melodía que escuchas te hace vivir. ¡Sigue dando play con nosotros!");
     }
-    
 }
     

@@ -16,6 +16,7 @@ func main() {
 	router.HandleFunc("/canciones/almacenamiento", ctrl.AlmacenarAudioCancion).Methods("POST")
 	router.HandleFunc("/generos", controlador.NuevoControladorGeneros().ObtenerGeneros).Methods("GET")
 	router.HandleFunc("/generos/{genero}/canciones", controlador.NuevoControladorAlmacenamientoCanciones().ObtenerCancionesPorGenero).Methods("GET")
+	router.HandleFunc("/canciones", controlador.NuevoControladorAlmacenamientoCanciones().ObtenerTodasLasCanciones).Methods("GET")
 	// --- NUEVA RUTA PARA SERVIR ARCHIVOS DE AUDIO ---
 	// Usamos un prefijo y un FileServer para servir de forma segura los archivos del directorio 'audios'.
 	// http.StripPrefix quita "/audio/" de la URL para que FileServer busque desde la raíz de 'audios'.

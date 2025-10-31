@@ -26,6 +26,26 @@ func NewCancionConsumer() *CancionConsumer {
 	return &CancionConsumer{}
 }
 
+// GetAllSongs obtiene todas las canciones disponibles desde el endpoint REST.
+func (cc *CancionConsumer) GetAllSongs() ([]models.Song, error) {
+	resp, err := http.Get(baseURL + "/canciones")
+	if err != nil {
+		return nil, fmt.Errorf("error al realizar la petición a /canciones: %w", err)
+	}
+	defer resp.Body.Close()
+
+	if resp.StatusCode != http.StatusOK {
+		return nil, fmt.Errorf("el servidor respondió con un estado inesperado: %s", resp.Status)
+	}
+
+	var songs []models.Song
+	if err := json.NewDecoder(resp.Body).Decode(&songs); err != nil {
+		return nil, fmt.Errorf("error al decodificar la respuesta de canciones: %w", err)
+	}
+
+	return songs, nil
+}
+
 // GetGenres obtiene todos los géneros disponibles desde el endpoint REST.
 func (cc *CancionConsumer) GetGenres() ([]models.Genre, error) {
 	resp, err := http.Get(baseURL + "/generos")

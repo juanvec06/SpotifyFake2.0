@@ -35,6 +35,15 @@ func GetRepositorioCanciones() *RepositorioCanciones {
 	})
 	return instancia
 }
+func (r *RepositorioCanciones) GetAllSongs() ([]dtos.CancionDTOOutput, error) {
+	r.mu.Lock()
+	defer r.mu.Unlock()
+
+	// Devolvemos una copia del slice para evitar modificaciones externas.
+	cancionesCopia := make([]dtos.CancionDTOOutput, len(r.canciones))
+	copy(cancionesCopia, r.canciones)
+	return cancionesCopia, nil
+}
 
 // cargarMetadata lee el archivo JSON y lo vuelca en la estructura del repositorio.
 func (r *RepositorioCanciones) cargarMetadata() error {

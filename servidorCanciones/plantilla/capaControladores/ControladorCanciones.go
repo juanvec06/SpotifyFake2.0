@@ -23,6 +23,18 @@ func NuevoControladorAlmacenamientoCanciones() *ControladorAlmacenamientoCancion
 	}
 }
 
+func (thisC *ControladorAlmacenamientoCanciones) ObtenerTodasLasCanciones(w http.ResponseWriter, r *http.Request) {
+	fmt.Print("Obteniendo todas las canciones...\n")
+
+	canciones, err := thisC.fachada.GetAllSongsService()
+	if err != nil {
+		http.Error(w, "Error al obtener las canciones", http.StatusInternalServerError)
+		return
+	}
+
+	w.Header().Set("Content-Type", "application/json")
+	json.NewEncoder(w).Encode(canciones)
+}
 func (thisC *ControladorAlmacenamientoCanciones) ObtenerCancionesPorGenero(w http.ResponseWriter, r *http.Request) {
 	fmt.Print("Obteniendo canciones por género...\n")
 	// gorilla/mux extrae las variables de la URL por nosotros.

@@ -18,7 +18,9 @@ func MostrarMenuPrincipal(facade *services.MusicFacade) {
 	for {
 		fmt.Println("\n===== Spotify =====")
 		fmt.Println("1. Ver géneros")
-		fmt.Println("2. Salir")
+		fmt.Println("2. Ver canciones")
+		fmt.Println("3. Ver preferencias")
+		fmt.Println("4. Salir")
 		fmt.Print("Seleccione una opción: ")
 
 		input, _ := reader.ReadString('\n')
@@ -26,6 +28,11 @@ func MostrarMenuPrincipal(facade *services.MusicFacade) {
 		case "1":
 			mostrarMenuGeneros(facade)
 		case "2":
+			mostrarMenuCanciones(facade, models.Genre{Name: ""})
+		case "3":
+			//TODO
+			//mostrarMenuPreferencias(facade)
+		case "4":
 			fmt.Println("¡Hasta luego!")
 			return
 		default:
@@ -66,14 +73,28 @@ func mostrarMenuGeneros(facade *services.MusicFacade) {
 
 // Muestra la lista de canciones para un género
 func mostrarMenuCanciones(facade *services.MusicFacade, genre models.Genre) {
-	songs, err := facade.GetSongsByGenre(genre.Name)
-	if err != nil {
-		fmt.Printf("Error al obtener canciones: %v\n", err)
-		return
+	flagAllSongs := false
+	if genre.Name == "" {
+		flagAllSongs = true
+	}
+	songs := []models.Song{}
+	err := error(nil)
+	if flagAllSongs {
+		songs, err = facade.GetAllSongs()
+		if err != nil {
+			fmt.Printf("Error al obtener todas las canciones: %v\n", err)
+			return
+		}
+	} else {
+		songs, err = facade.GetSongsByGenre(genre.Name)
+		if err != nil {
+			fmt.Printf("Error al obtener canciones: %v\n", err)
+			return
+		}
 	}
 
 	for {
-		fmt.Printf("\n--- Canciones de %s ---\n", genre.Name)
+		fmt.Printf("\n--- Canciones  %s ---\n", genre.Name)
 		for i, song := range songs {
 			fmt.Printf("%d. %s - %s\n", i+1, song.Artista, song.Titulo)
 		}
