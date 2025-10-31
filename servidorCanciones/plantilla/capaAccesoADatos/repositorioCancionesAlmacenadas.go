@@ -75,11 +75,11 @@ func (r *RepositorioCanciones) cargarMetadata() error {
 // guardarMetadata escribe el estado actual de los metadatos al archivo JSON.
 func (r *RepositorioCanciones) guardarMetadata() error {
 	// Esta función no se bloquea porque siempre será llamada desde métodos que ya tienen el lock.
-	data, err := json.MarshalIndent(r.canciones, "", "  ") // MarshalIndent para que el JSON sea legible
+	data, err := json.MarshalIndent(r.canciones, "", "  ")
 	if err != nil {
 		return err
 	}
-	// os.MkdirAll se asegura de que el directorio 'audios' exista.
+	// se asegura de que el directorio audios exista.
 	os.MkdirAll(filepath.Dir(metadataPath), os.ModePerm)
 	return os.WriteFile(metadataPath, data, 0644)
 }

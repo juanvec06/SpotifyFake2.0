@@ -10,19 +10,15 @@ import (
 )
 
 const (
-	baseURL = "http://localhost:5000" // Base de la URL del servidor de canciones
+	baseURL = "http://localhost:5000" // URL del servidor de canciones
 )
 
-// CancionConsumer se encarga de la lógica de obtención de canciones y géneros vía HTTP.
+// CancionConsumer se encarga de la logica de obtención de canciones y géneros vía HTTP.
 type CancionConsumer struct {
-	// Ya no necesita un cliente gRPC.
-	// Podríamos agregar aquí un http.Client para configuraciones avanzadas,
-	// pero para este caso no es necesario.
 }
 
 // NewCancionConsumer crea una nueva instancia de CancionConsumer.
 func NewCancionConsumer() *CancionConsumer {
-	// El constructor ya no recibe el cliente gRPC.
 	return &CancionConsumer{}
 }
 

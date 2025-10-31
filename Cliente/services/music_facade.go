@@ -12,7 +12,6 @@ import (
 	"proyecto.local/cliente/models"
 	"proyecto.local/cliente/streamingConsumer"
 
-	// pbSongs ya no es necesario
 	pbStreaming "proyecto.local/servidor-streaming/serviciosCancion"
 )
 
@@ -24,7 +23,6 @@ type MusicFacade struct {
 }
 
 // NewMusicFacade crea una nueva instancia de la fachada
-// Ya no necesita recibir el cliente gRPC de canciones.
 func NewMusicFacade(streamingClient pbStreaming.StreamingServiceClient) *MusicFacade {
 	return &MusicFacade{
 		cancionConsumer:   cancionConsumer.NewCancionConsumer(), // Se crea el nuevo consumidor HTTP
@@ -57,7 +55,6 @@ func (f *MusicFacade) PlaySong(filename string, stopSignal chan bool) error {
 	normalizedFilename := strings.ReplaceAll(filename, "\\", "/")
 
 	// Quitamos el prefijo "audios/" porque la nueva ruta del servidor de streaming
-	// ya lo compone internamente.
 	cleanFilename := strings.TrimPrefix(normalizedFilename, "audios/")
 
 	req := &pbStreaming.StreamSongRequest{SongTitle: cleanFilename}
