@@ -160,14 +160,50 @@ func mostrarMenuDetalles(facade *services.MusicFacade, song models.Song) {
 // Llama a la lógica de streaming usando la fachada
 func reproducirCancion(facade *services.MusicFacade, filepath string) {
 	stopSignal := make(chan bool)
+	playbackDone := make(chan struct{})
 
-	// Mostrar menú de control de reproducción
-	go mostrarMenuReproduccion(stopSignal)
+	// 1. Inicia la reproducción en una goroutine en segundo plano.
+	go func() {
+		err := facade.PlaySong(filepath, stopSignal)
+		if err != nil {
+			// Imprime el error en una nueva línea para no interferir con el prompt del usuario
+			fmt.Printf("\nError al reproducir la canción: %v\n", err)
+		}
+		close(playbackDone) // Señala que la reproducción ha terminado por cualquier motivo.
+	}()
 
-	// Usar la fachada para reproducir la canción
-	err := facade.PlaySong(filepath, stopSignal)
-	if err != nil {
-		fmt.Printf("Error al reproducir la canción: %v\n", err)
+	// 2. La goroutine principal ahora maneja la entrada del usuario.
+	fmt.Println("\n--- Reproduciendo Canción ---")
+	fmt.Println("Presione '1' y Enter para detener y volver.")
+	fmt.Print("Opción: ")
+
+	// 3. Crea una goroutine solo para leer la entrada y enviarla por un canal.
+	userInputChan := make(chan string)
+	go func() {
+		input, _ := reader.ReadString('\n')
+		userInputChan <- strings.TrimSpace(input)
+	}()
+
+	// 4. Usa 'select' para esperar el primer evento que ocurra:
+	//    - La canción termina por sí sola.
+	//    - El usuario ingresa una opción.
+	select {
+	case <-playbackDone:
+		// La goroutine de userInputChan sigue bloqueada esperando una entrada.
+		// Al informar al usuario que presione Enter, esa entrada será consumida por la goroutine "huérfana",
+		// evitando que interfiera con el siguiente menú.
+		fmt.Println("\nLa canción ha terminado. Presiona Enter para volver al menú.")
+		<-userInputChan
+		return
+
+	case input := <-userInputChan:
+		// El usuario ingresó algo.
+		if input == "1" {
+			stopSignal <- true // Envía la señal para detener.
+			<-playbackDone     // Espera a que la goroutine de reproducción confirme que ha terminado.
+			fmt.Println("\nReproducción detenida.")
+		}
+		// Si el usuario ingresa otra cosa, simplemente volvemos al menú.
 		return
 	}
 }
