@@ -207,15 +207,3 @@ func reproducirCancion(facade *services.MusicFacade, filepath string) {
 		return
 	}
 }
-
-// Muestra el menú de control durante la reproducción
-func mostrarMenuReproduccion(stopSignal chan bool) {
-	fmt.Println("\nReproduciendo Canción")
-	fmt.Println("1. Salir")
-	fmt.Print("Seleccione una opción: ")
-
-	input, _ := reader.ReadString('\n')
-	if strings.TrimSpace(input) == "1" {
-		stopSignal <- true
-	}
-}
