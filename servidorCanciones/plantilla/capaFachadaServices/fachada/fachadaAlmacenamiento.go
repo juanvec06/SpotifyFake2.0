@@ -46,5 +46,5 @@ func (thisF *FachadaAlmacenamiento) GuardarCancion(objCancion dtos.CancionAlmace
 		Mensaje: "Nueva canción almacenada: " + objCancion.Titulo + " de " + objCancion.Artista,
 	})
 
-	return thisF.repo.GuardarCancion(objCancion.Titulo, objCancion.Genero, objCancion.Artista, objCancion.Album, objCancion.ReleaseYear, data)
+	return thisF.repo.GuardarCancion(objCancion.Titulo, objCancion.Genero, objCancion.Artista, objCancion.Album, objCancion.ReleaseYear, objCancion.Idioma, data)
 }

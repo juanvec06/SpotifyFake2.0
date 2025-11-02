@@ -18,3 +18,26 @@ type Song struct {
 	Album       string `json:"album"`
 	ReleaseYear int    `json:"release_year"`
 }
+
+// Preferencias representa las preferencias musicales de un usuario
+type PreferenciaGenero struct {
+	NombreGenero       string `json:"nombreGenero"`
+	NumeroPreferencias int    `json:"numeroPreferencias"`
+}
+
+type PreferenciaArtista struct {
+	NombreArtista      string `json:"nombreArtista"`
+	NumeroPreferencias int    `json:"numeroPreferencias"`
+}
+
+type PreferenciaIdioma struct {
+	NombreIdioma       string `json:"nombreIdioma"`
+	NumeroPreferencias int    `json:"numeroPreferencias"`
+}
+
+type Preferencias struct {
+	IDUsuario            int                  `json:"idUsuario"`
+	PreferenciasGeneros  []PreferenciaGenero  `json:"preferenciasGeneros"`
+	PreferenciasArtistas []PreferenciaArtista `json:"preferenciasArtistas"`
+	PreferenciasIdiomas  []PreferenciaIdioma  `json:"preferenciasIdiomas"`
+}

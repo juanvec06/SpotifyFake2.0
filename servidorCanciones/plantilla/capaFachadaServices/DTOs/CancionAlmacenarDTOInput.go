@@ -6,4 +6,5 @@ type CancionAlmacenarDTOInput struct {
 	Album       string `json:"album"`
 	Genero      string `json:"genero"`
 	ReleaseYear int    `json:"release_year"`
+	Idioma      string `json:"idioma"`
 }
