@@ -118,7 +118,7 @@ func (r *RepositorioCanciones) GetSongsByGenre(genero string) ([]dtos.CancionDTO
 }
 
 // GuardarCancion guarda el archivo de audio y actualiza los metadatos.
-func (r *RepositorioCanciones) GuardarCancion(titulo string, genero string, artista string, album string, releaseYear int, data []byte) error {
+func (r *RepositorioCanciones) GuardarCancion(titulo string, genero string, artista string, album string, releaseYear int, idioma string, data []byte) error {
 	r.mu.Lock()
 	defer r.mu.Unlock()
 
@@ -137,12 +137,13 @@ func (r *RepositorioCanciones) GuardarCancion(titulo string, genero string, arti
 
 	// 3. Crear el nuevo DTO con los metadatos.
 	nuevaCancion := dtos.CancionDTOOutput{
-		Titulo:      titulo,
+		Titulo:      fileName, // Guardamos el nombre del archivo completo
 		Artista:     artista,
 		Genero:      genero,
 		FilePath:    filePath, // Guardamos la ruta para futura referencia
 		Album:       album,
 		ReleaseYear: releaseYear,
+		Idioma:      idioma, // Guardamos el idioma
 	}
 
 	// 4. Agregar los nuevos metadatos al slice en memoria.

@@ -50,12 +50,11 @@ func MostrarMenuPrincipal(facade *services.MusicFacade, Usuario string) {
 		input, _ := reader.ReadString('\n')
 		switch strings.TrimSpace(input) {
 		case "1":
-			mostrarMenuGeneros(facade)
+			mostrarMenuGeneros(facade, Usuario)
 		case "2":
-			mostrarMenuCanciones(facade, models.Genre{Name: ""})
+			mostrarMenuCanciones(facade, models.Genre{Name: ""}, Usuario)
 		case "3":
-			//TODO
-			//mostrarMenuPreferencias(facade, Usuario)
+			mostrarMenuPreferencias(facade, Usuario)
 		case "4":
 			fmt.Println("¡Hasta luego!")
 			return
@@ -66,7 +65,7 @@ func MostrarMenuPrincipal(facade *services.MusicFacade, Usuario string) {
 }
 
 // Muestra la lista de géneros
-func mostrarMenuGeneros(facade *services.MusicFacade) {
+func mostrarMenuGeneros(facade *services.MusicFacade, usuario string) {
 	genres, err := facade.GetGenres()
 	if err != nil {
 		fmt.Printf("Error al obtener géneros: %v\n", err)
@@ -86,7 +85,7 @@ func mostrarMenuGeneros(facade *services.MusicFacade) {
 
 		if choice > 0 && choice <= len(genres) {
 			genre := genres[choice-1]
-			mostrarMenuCanciones(facade, genre)
+			mostrarMenuCanciones(facade, genre, usuario)
 		} else if choice == len(genres)+1 {
 			return
 		} else {
@@ -96,7 +95,7 @@ func mostrarMenuGeneros(facade *services.MusicFacade) {
 }
 
 // Muestra la lista de canciones para un género
-func mostrarMenuCanciones(facade *services.MusicFacade, genre models.Genre) {
+func mostrarMenuCanciones(facade *services.MusicFacade, genre models.Genre, usuario string) {
 	flagAllSongs := false
 	if genre.Name == "" {
 		flagAllSongs = true
@@ -130,7 +129,7 @@ func mostrarMenuCanciones(facade *services.MusicFacade, genre models.Genre) {
 
 		if choice > 0 && choice <= len(songs) {
 			song := songs[choice-1]
-			mostrarMenuDetalles(facade, song)
+			mostrarMenuDetalles(facade, song, usuario)
 		} else if choice == len(songs)+1 {
 			return
 		} else {
@@ -140,7 +139,7 @@ func mostrarMenuCanciones(facade *services.MusicFacade, genre models.Genre) {
 }
 
 // Muestra los detalles de una canción y la opción de reproducir
-func mostrarMenuDetalles(facade *services.MusicFacade, song models.Song) {
+func mostrarMenuDetalles(facade *services.MusicFacade, song models.Song, usuario string) {
 	fmt.Printf("\n--- Detalles de la Canción ---\n")
 	fmt.Printf("	- Título: %s\n", song.Titulo)
 	fmt.Printf("	- Artista: %s\n", song.Artista)
@@ -153,19 +152,32 @@ func mostrarMenuDetalles(facade *services.MusicFacade, song models.Song) {
 
 	input, _ := reader.ReadString('\n')
 	if strings.TrimSpace(input) == "1" {
-		reproducirCancion(facade, song.FilePath)
+		reproducirCancion(facade, song.FilePath, usuario)
 	}
 }
 
 // Llama a la lógica de streaming usando la fachada
-func reproducirCancion(facade *services.MusicFacade, filepath string) {
+func reproducirCancion(facade *services.MusicFacade, filepath string, usuario string) {
+	// Convertir nombre de usuario a ID numérico
+	// usuario1 -> "1", usuario2 -> "2", usuario3 -> "3"
+	usuarioID := "1" // Valor por defecto
+	if len(usuario) > 0 {
+		// Extraer el último carácter del nombre de usuario
+		ultimoChar := usuario[len(usuario)-1:]
+		if ultimoChar >= "1" && ultimoChar <= "9" {
+			usuarioID = ultimoChar
+		}
+	}
+
+	fmt.Printf("🎵 Reproduciendo para usuario: %s (ID: %s)\n", usuario, usuarioID)
+
 	stopSignal := make(chan bool)
 
 	// Mostrar menú de control de reproducción
 	go mostrarMenuReproduccion(stopSignal)
 
-	// Usar la fachada para reproducir la canción
-	err := facade.PlaySong(filepath, stopSignal)
+	// Usar la fachada para reproducir la canción con el usuario ID
+	err := facade.PlaySong(filepath, usuarioID, stopSignal)
 	if err != nil {
 		fmt.Printf("Error al reproducir la canción: %v\n", err)
 		return
@@ -182,4 +194,84 @@ func mostrarMenuReproduccion(stopSignal chan bool) {
 	if strings.TrimSpace(input) == "1" {
 		stopSignal <- true
 	}
+}
+
+// Muestra el menú de preferencias musicales del usuario
+func mostrarMenuPreferencias(facade *services.MusicFacade, usuario string) {
+	fmt.Println("\n===== Preferencias Musicales =====")
+
+	// Mapeo de usuario a ID (basado en db.json del servidor de preferencias)
+	usuariosIDs := map[string]int{
+		"usuario1": 1, // Daniel
+		"usuario2": 2, // María
+		"usuario3": 3, // Carlos
+	}
+
+	userID, exists := usuariosIDs[usuario]
+	if !exists {
+		fmt.Printf("❌ No se encontró ID para el usuario '%s'\n", usuario)
+		fmt.Println("\nPresione Enter para continuar...")
+		reader.ReadString('\n')
+		return
+	}
+
+	fmt.Printf("Obteniendo preferencias para %s (ID: %d)...\n\n", usuario, userID)
+
+	preferencias, err := facade.GetPreferenciasByUserID(userID)
+	if err != nil {
+		fmt.Printf("❌ Error al obtener preferencias: %v\n", err)
+		fmt.Println("\n⚠️  Asegúrate de que:")
+		fmt.Println("   1. El servidor de Preferencias esté ejecutándose (puerto 8080)")
+		fmt.Println("   2. El servidor de Reproducciones esté ejecutándose (puerto 3000)")
+		fmt.Println("   3. Hayas reproducido al menos una canción")
+		fmt.Println("\nPresione Enter para continuar...")
+		reader.ReadString('\n')
+		return
+	}
+
+	// Mostrar preferencias
+	fmt.Println("╔════════════════════════════════════════╗")
+	fmt.Printf("║  Usuario ID: %-25d ║\n", preferencias.IDUsuario)
+	fmt.Println("╠════════════════════════════════════════╣")
+	fmt.Println("║  🎵 GÉNEROS FAVORITOS                 ║")
+	fmt.Println("╠════════════════════════════════════════╣")
+
+	if len(preferencias.PreferenciasGeneros) == 0 {
+		fmt.Println("║  (No hay géneros registrados)          ║")
+	} else {
+		for i, genero := range preferencias.PreferenciasGeneros {
+			info := fmt.Sprintf("%s (%d reproducciones)", genero.NombreGenero, genero.NumeroPreferencias)
+			fmt.Printf("║  %d. %-35s ║\n", i+1, info)
+		}
+	}
+
+	fmt.Println("╠════════════════════════════════════════╣")
+	fmt.Println("║  🎤 ARTISTAS FAVORITOS                ║")
+	fmt.Println("╠════════════════════════════════════════╣")
+
+	if len(preferencias.PreferenciasArtistas) == 0 {
+		fmt.Println("║  (No hay artistas registrados)         ║")
+	} else {
+		for i, artista := range preferencias.PreferenciasArtistas {
+			info := fmt.Sprintf("%s (%d reproducciones)", artista.NombreArtista, artista.NumeroPreferencias)
+			fmt.Printf("║  %d. %-35s ║\n", i+1, info)
+		}
+	}
+
+	fmt.Println("╠════════════════════════════════════════╣")
+	fmt.Println("║  🌍 IDIOMAS FAVORITOS                 ║")
+	fmt.Println("╠════════════════════════════════════════╣")
+
+	if len(preferencias.PreferenciasIdiomas) == 0 {
+		fmt.Println("║  (No hay idiomas registrados)          ║")
+	} else {
+		for i, idioma := range preferencias.PreferenciasIdiomas {
+			fmt.Printf("║  %d. %-25s (%d) ║\n", i+1, idioma.NombreIdioma, idioma.NumeroPreferencias)
+		}
+	}
+
+	fmt.Println("╚════════════════════════════════════════╝")
+
+	fmt.Println("\nPresione Enter para volver al menú principal...")
+	reader.ReadString('\n')
 }

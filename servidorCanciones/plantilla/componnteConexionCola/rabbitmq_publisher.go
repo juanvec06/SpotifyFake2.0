@@ -23,7 +23,7 @@ type NotificacionCancion struct {
 
 // Crear conexión a RabbitMQ
 func NewRabbitPublisher() (*RabbitPublisher, error) {
-	conn, err := amqp.Dial("amqp://admin:1234@192.168.20.91:5672/")
+	conn, err := amqp.Dial("amqp://admin:1234@192.168.80.24:5672/")
 	if err != nil {
 		return nil, fmt.Errorf("error conectando a RabbitMQ: %v", err)
 	}
