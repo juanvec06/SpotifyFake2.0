@@ -176,7 +176,7 @@ func reproducirCancion(facade *services.MusicFacade, filepath string, usuario st
 
 	// 1. Inicia la reproducción en una goroutine en segundo plano.
 	go func() {
-		err := facade.PlaySong(filepath, stopSignal)
+		err := facade.PlaySong(filepath, usuarioID, stopSignal)
 		if err != nil {
 			// Imprime el error en una nueva línea para no interferir con el prompt del usuario
 			fmt.Printf("\nError al reproducir la canción: %v\n", err)

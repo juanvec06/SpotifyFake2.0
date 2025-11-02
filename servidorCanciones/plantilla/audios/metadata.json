@@ -5,7 +5,8 @@
     "album": "Stockholm",
     "genero": "Techno",
     "release_year": 2018,
-    "file_path": "audios\\Cult_Member_Fantastic_Life.mp3"
+    "file_path": "audios\\Cult_Member_Fantastic_Life.mp3",
+    "idioma": ""
   },
   {
     "titulo": "Lamento Boliviano",
@@ -13,7 +14,8 @@
     "album": "BigBang",
     "genero": "Rock",
     "release_year": 1994,
-    "file_path": "audios\\Los_enanitos_verdes_Lamento_Boliviano.mp3"
+    "file_path": "audios\\Los_enanitos_verdes_Lamento_Boliviano.mp3",
+    "idioma": ""
   },
   {
     "titulo": "De musica ligera",
@@ -21,7 +23,8 @@
     "album": "Cancion animal",
     "genero": "Rock",
     "release_year": 1990,
-    "file_path": "audios\\Soda_estereo_De_musica_ligera.mp3"
+    "file_path": "audios\\Soda_estereo_De_musica_ligera.mp3",
+    "idioma": ""
   },
   {
     "titulo": "testAudio",
@@ -29,6 +32,25 @@
     "album": "yoyoyo",
     "genero": "test",
     "release_year": 2025,
-    "file_path": "audios\\yo_testAudio.mp3"
+    "file_path": "audios\\yo_testAudio.mp3",
+    "idioma": ""
+  },
+  {
+    "titulo": "Vela_Cancionsita_misteriosa2.mp3",
+    "artista": "Vela",
+    "album": "vela",
+    "genero": "Salsa",
+    "release_year": 2025,
+    "file_path": "audios\\Vela_Cancionsita_misteriosa2.mp3",
+    "idioma": ""
+  },
+  {
+    "titulo": "Vela_Cancionsita_.mp3",
+    "artista": "Vela",
+    "album": "vela",
+    "genero": "Salsa",
+    "release_year": 2025,
+    "file_path": "audios\\Vela_Cancionsita_.mp3",
+    "idioma": "español"
   }
 ]

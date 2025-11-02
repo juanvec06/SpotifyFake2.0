@@ -45,11 +45,6 @@ func main() {
 	})
 
 	fmt.Println("✅ Servidor de Reproducciones escuchando en el puerto 3000...")
-	fmt.Println("📋 Endpoints disponibles:")
-	fmt.Println("   POST /reproducciones/registrar")
-	fmt.Println("   GET  /reproducciones?idUsuario={id}")
-	fmt.Println("   POST /tendencias/reproduccion (deprecated)")
-	fmt.Println("   GET  /tendencias/listarReproducciones (deprecated)")
 
 	if err := http.ListenAndServe(":3000", nil); err != nil {
 		fmt.Printf("❌ Error al iniciar el servidor: %v\n", err)
