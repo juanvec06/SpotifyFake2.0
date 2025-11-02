@@ -22,5 +22,13 @@
     "genero": "Rock",
     "release_year": 1990,
     "file_path": "audios\\Soda_estereo_De_musica_ligera.mp3"
+  },
+  {
+    "titulo": "testAudio",
+    "artista": "yo",
+    "album": "yoyoyo",
+    "genero": "test",
+    "release_year": 2025,
+    "file_path": "audios\\yo_testAudio.mp3"
   }
 ]

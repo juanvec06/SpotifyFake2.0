@@ -1,5 +1,8 @@
 /*
 Package capaFachadaServices implementa la lógica de negocio para el servicio de streaming de audio.
+
+Este paquete define la función StreamAudioFile que maneja la lectura del archivo de audio
+y utiliza un callback para enviar fragmentos de audio al cliente a través del stream gRPC.
 */
 package capaFachadaServices
 
@@ -7,56 +10,45 @@ import (
 	"fmt"
 	"io"
 	"log"
-	"net/http" // Importamos el paquete http
-	"strings"  // Importamos el paquete strings
+	"os"
 )
 
+// Definimos el tamaño de cada fragmento de audio que enviaremos. 64KB es un buen punto de partida.
 const chunkSize = 64 * 1024
 
-// URL base del servidor que almacena las canciones
-const songServerBaseURL = "http://localhost:5000"
+// StreamAudioFile es la función principal que recibe el título de la canción y una función "callback" que se encargará de enviar cada fragmento.
+func StreamAudioFile(songTitle string, sendChunk func(chunk []byte) error) error {
+	log.Printf("Fachada: Iniciando streaming para la canción '%s'", songTitle)
 
-func StreamAudioFile(songPath string, sendChunk func(chunk []byte) error) error {
-	log.Printf("Fachada: Solicitando streaming para la ruta '%s'", songPath)
-
-	// Nos aseguramos de que la ruta use slashes (/) para la URL
-	urlPath := strings.ReplaceAll(songPath, "\\", "/")
-
-	// Construimos la URL completa para solicitar el archivo de audio al servidor de canciones.
-	// Ej: http://localhost:5000/audio/Los enanitos verdes_Lamento Boliviano.mp3
-	fullURL := fmt.Sprintf("%s/audio/%s", songServerBaseURL, urlPath)
-
-	log.Printf("Fachada: Realizando petición GET a %s", fullURL)
-
-	// Hacemos la petición HTTP para obtener el archivo de audio.
-	resp, err := http.Get(fullURL)
+	// filePath del archivo en el servidor de canciones
+	filePath := "../servidorCanciones/plantilla/audios/" + songTitle
+	file, err := os.Open(filePath)
 	if err != nil {
-		return fmt.Errorf("no se pudo hacer la petición al servidor de canciones: %w", err)
+		return fmt.Errorf("no se pudo abrir el archivo de audio: %w", err)
 	}
-	defer resp.Body.Close()
-
-	// Verificamos si la canción fue encontrada
-	if resp.StatusCode != http.StatusOK {
-		return fmt.Errorf("el servidor de canciones respondió con un error: %s", resp.Status)
-	}
+	// Nos aseguramos de que el archivo se cierre al final de la función.
+	defer file.Close()
 
 	// Creamos un buffer (un espacio de memoria temporal) para leer los fragmentos.
 	buffer := make([]byte, chunkSize)
 
 	for {
-		// Leemos un fragmento del cuerpo de la respuesta HTTP (que es el audio).
-		bytesRead, err := resp.Body.Read(buffer)
+		// Leemos un fragmento del archivo y lo guardamos en el buffer.
+		bytesRead, err := file.Read(buffer)
 
+		// Si llegamos al final del archivo (End Of File), terminamos el bucle.
 		if err == io.EOF {
-			log.Println("Fachada: Se ha terminado de leer el stream del servidor de canciones.")
+			log.Println("Fachada: Se ha terminado de leer el archivo.")
 			break
 		}
+		// Si hay otro tipo de error, lo devolvemos.
 		if err != nil {
-			return fmt.Errorf("error leyendo el stream de audio: %w", err)
+			return fmt.Errorf("error leyendo el archivo: %w", err)
 		}
 
-		// Usamos la función callback para enviar el fragmento al cliente final.
+		// Usamos la función callback para enviar el fragmento que acabamos de leer.
 		if err := sendChunk(buffer[:bytesRead]); err != nil {
+			// Si el callback falla (ej: el cliente se desconectó), devolvemos el error.
 			return fmt.Errorf("la función de envío de fragmentos falló: %w", err)
 		}
 	}
