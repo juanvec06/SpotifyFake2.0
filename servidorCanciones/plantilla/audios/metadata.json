@@ -1,56 +1,56 @@
 [
   {
-    "titulo": "Fantastic Life",
+    "titulo": "Daddy_Yankee_Gasolina.mp3",
+    "artista": "Daddy Yankee",
+    "album": "Barrio fino",
+    "genero": "Regueton",
+    "release_year": 2004,
+    "file_path": "audios\\Daddy_Yankee_Gasolina.mp3",
+    "idioma": "español"
+  },
+  {
+    "titulo": "Niki_Istrefi_Red_Armor.mp3",
+    "artista": "Niki Istrefi",
+    "album": "Euromantic001",
+    "genero": "Techno",
+    "release_year": 2017,
+    "file_path": "audios\\Niki_Istrefi_Red_Armor.mp3",
+    "idioma": "no"
+  },
+  {
+    "titulo": "Soda_estereo_De_Música_Ligera.mp3",
+    "artista": "Soda estereo",
+    "album": "Canción animal",
+    "genero": "Rock",
+    "release_year": 1990,
+    "file_path": "audios\\Soda_estereo_De_Música_Ligera.mp3",
+    "idioma": "español"
+  },
+  {
+    "titulo": "Cult_Member_Fantastic_Life.mp3",
     "artista": "Cult Member",
     "album": "Stockholm",
     "genero": "Techno",
     "release_year": 2018,
     "file_path": "audios\\Cult_Member_Fantastic_Life.mp3",
-    "idioma": ""
+    "idioma": "no"
   },
   {
-    "titulo": "Lamento Boliviano",
-    "artista": "Los enanitos verdes",
-    "album": "BigBang",
-    "genero": "Rock",
-    "release_year": 1994,
-    "file_path": "audios\\Los_enanitos_verdes_Lamento_Boliviano.mp3",
-    "idioma": ""
-  },
-  {
-    "titulo": "De musica ligera",
-    "artista": "Soda estereo",
-    "album": "Cancion animal",
+    "titulo": "Héroes_del_Silencio_Entre_Dos_Tierras.mp3",
+    "artista": "Héroes del Silencio",
+    "album": "Senderos de traición",
     "genero": "Rock",
     "release_year": 1990,
-    "file_path": "audios\\Soda_estereo_De_musica_ligera.mp3",
-    "idioma": ""
-  },
-  {
-    "titulo": "testAudio",
-    "artista": "yo",
-    "album": "yoyoyo",
-    "genero": "test",
-    "release_year": 2025,
-    "file_path": "audios\\yo_testAudio.mp3",
-    "idioma": ""
-  },
-  {
-    "titulo": "Vela_Cancionsita_misteriosa2.mp3",
-    "artista": "Vela",
-    "album": "vela",
-    "genero": "Salsa",
-    "release_year": 2025,
-    "file_path": "audios\\Vela_Cancionsita_misteriosa2.mp3",
-    "idioma": ""
-  },
-  {
-    "titulo": "Vela_Cancionsita_.mp3",
-    "artista": "Vela",
-    "album": "vela",
-    "genero": "Salsa",
-    "release_year": 2025,
-    "file_path": "audios\\Vela_Cancionsita_.mp3",
+    "file_path": "audios\\Héroes_del_Silencio_Entre_Dos_Tierras.mp3",
     "idioma": "español"
+  },
+  {
+    "titulo": "TestArtist_TestSong.mp3",
+    "artista": "TestArtist",
+    "album": "album",
+    "genero": "Test",
+    "release_year": 2025,
+    "file_path": "audios\\TestArtist_TestSong.mp3",
+    "idioma": "ingles"
   }
 ]
